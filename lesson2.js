@@ -155,3 +155,25 @@ console.log(mathOperation(7,2, plus));
 console.log(mathOperation(17,7, minus));
 console.log(mathOperation(23, 11, multiply));
 console.log(mathOperation(121,11, divide));
+
+
+
+
+/* 8. С помощью рекурсии организовать функцию возведения числа в степень.
+Формат: function power(val, pow), где val – заданное число, pow – степень. */
+console.log('\nЗадание 7:')
+
+function power(val, pow) {
+    if (val === 0 && pow <= 0) return 'Выражение лишено смысла';
+    if (val === 0 && pow > 0) return 0;         // Ноль в любой натуральной степени равен нулю
+    if (pow === 0) return 1;                    // Любое число в нулевой степени равно единице (кроме 0)
+    if (pow === 1) return val;
+    if (pow < 0) {pow = -pow; val = 1 /val}     // При отрицательной степени: 1 делим на число в положительной степени
+    val *= power(val, --pow);
+    return val;
+}
+
+console.log(power(4, 5));
+console.log(power(-3, 7));
+console.log(power(0, 7));
+console.log(power(10, -3));  // Этот вариант почему-то некорректно работает, считает с погрешностью.
