@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        table {
+            margin: auto;
+            border-collapse: collapse;
+        }
+        tr {
+            width: 25px;
+            height: 25px;
+        }
+        td {
+            border: 1px solid #000;
+            width: 25px;
+            height: 25px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+<script>
+    'use strict';
+
+    function createChessDesk() {
+        const numbers = ['', 8, 7, 6, 5, 4, 3, 2, 1, ''];
+        const letters = ['', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', ''];
+        const chessTable = document.createElement('table');
+
+        for (let row = 0; row < 10; row++) {
+            const tr = document.createElement('tr');
+            chessTable.appendChild(tr);
+
+            for ( let col = 0; col < 10; col++) {
+                const td = document.createElement('td');
+                tr.appendChild(td);
+
+                if ((row + col) % 2 !== 0) {
+                    td.style.background = 'gray';
+                }
+
+                if (row === 0 || row === 9) {
+                    td.textContent = letters[col];
+                    td.style.border = 'none';
+                    td.style.background = 'none';
+                    if (row === 0) td.style.transform = 'rotate(180deg)';
+                }
+
+                if (col === 0 || col === 9) {
+                    td.textContent = numbers[row];
+                    td.style.border = 'none';
+                    td.style.background = 'none';
+                    if (col === 9) td.style.transform = 'rotate(180deg)';
+                }
+            }
+        }
+        document.body.appendChild(chessTable);
+    }
+
+    createChessDesk();
+</script>
+</body>
+</html>
