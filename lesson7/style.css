@@ -30,17 +30,31 @@ td.cell{
     border-collapse: collapse;
 }
 .food{
-    background: #00d021;
+    background: #c6d40e;
 }
+.block {
+    animation: color 1s infinite alternate;
+}
+
+@keyframes color {
+    from { background-color: black; }
+    to { background-color: darkred; }
+}
+
 .snakeBody{
-    background: #e5e5e5;
+    background: #6a774a;
 }
 .snakeHead{
-    background: #9b0013;
+    background: darkgreen;
 }
 .disabled {
     background: #7c7c7c;
 }
 .disabled:hover{
     background: #7c7c7c;
+}
+.score {
+    text-align: center;
+    font-size: 20px;
+    color: yellowgreen;
 }
