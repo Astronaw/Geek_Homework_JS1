@@ -87,7 +87,7 @@ const map = {
     console.log(this.cells);
   },
 
-  render(snakePointsArray, foodPoint) {
+  render(snakePointsArray, foodPoint, blockPoint) {
     for (const cell of this.usedCells) {
       cell.className = 'cell';
     }
@@ -105,6 +105,11 @@ const map = {
 
     foodCell.classList.add('food');
     this.usedCells.push(foodCell);
+
+    const blockCell = this.cells[`x${blockPoint.x}_y${blockPoint.y}`];
+
+    blockCell.classList.add('block');
+    this.usedCells.push(blockCell);
   },
 };
 
@@ -180,6 +185,27 @@ const food = {
   },
 };
 
+const block = {
+  x: null,
+  y: null,
+
+  getCoordinates() {
+    return {
+      x: this.x,
+      y: this.y,
+    };
+  },
+
+  setCoordinates(point) {
+    this.x = point.x;
+    this.y = point.y;
+  },
+
+  isOnPoint(point) {
+    return this.x === point.x && this.y === point.y;
+  },
+};
+
 const status = {
   condition: null,
 
@@ -209,7 +235,9 @@ const game = {
   map,
   snake,
   food,
+  block,
   status,
+  score: 0,
   tickInterval: null,
 
   init(userSettings) {
@@ -292,6 +320,8 @@ const game = {
     this.stop();
     this.snake.init(this.getStartSnakeBody(), 'up');
     this.food.setCoordinates(this.getRandomFreeCoordinates());
+    this.resetScore();
+    this.clearBlock();
     this.render();
   },
 
@@ -320,7 +350,7 @@ const game = {
   },
 
   render() {
-    this.map.render(this.snake.getBody(), this.food.getCoordinates());
+    this.map.render(this.snake.getBody(), this.food.getCoordinates(), this.block.getCoordinates());
   },
 
   play() {
@@ -353,9 +383,13 @@ const game = {
   tickHandler() {
     if (!this.canMakeStep()) return this.finish();
 
+    if (this.block.isOnPoint(this.snake.getNextStepHeadPoint())) return this.finish();
+
     if (this.food.isOnPoint(this.snake.getNextStepHeadPoint())) {
       this.snake.growUp();
+      this.setScore();
       this.food.setCoordinates(this.getRandomFreeCoordinates());
+      this.block.setCoordinates(this.getRandomFreeCoordinates());
 
       if (this.isGameWon()) this.finish();
     }
@@ -376,6 +410,21 @@ const game = {
 
   isGameWon() {
     return this.snake.getBody().length > this.config.getWinFoodCount();
+  },
+
+  setScore() {
+    this.score++;
+    document.getElementById('score').innerText = this.score;
+  },
+
+  resetScore() {
+    this.score = 0;
+    document.getElementById('score').innerText = this.score;
+  },
+
+  clearBlock() {
+    this.block.x = null;
+    this.block.y = null;
   },
 };
 
